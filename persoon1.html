@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gonnie – Het masker achter park Voorburg</title>
+    <link rel="stylesheet" href="mijnstyle.css">
+</head>
+<body>
+    <header>
+        <img src="logotest.png" alt="logo website">
+        <h1>masker achter park voorburg</h1>
+    </header>
+
+    <div class="back-button">
+        <button onclick="location.href='index.html'">&larr; Terug</button>
+    </div>
+
+    <section class="content">
+        <img src="illustratie1.jpg" alt="Illustratie persoon 1">
+        <div class="text-section">
+            <h2>'Mijn dochter, mijn broers en zussen; familie is het allerbelangrijkste voor mij.'</h2>
+            <p>43 jaar geleden op 23-jarige leeftijd ben ik na mijn bevalling van mijn dochter erg ziek geworden. Ik kreeg veel last van angsten en deze angsten beperkten mij in het dagelijks leven. De beperkingen liepen zodanig op dat ik kort na mijn bevalling niet kon zorgen voor mijn eigen dochter, en ook niet voor mezelf. Sindsdien ben ik een bewoner en cliënt van zorgpark Voorburg. Ze helpen mij hier en gaan goed met mij om.</p>
+            <p>Vaak snappen mensen mijn angsten niet, je kan mijn angsten niet zien maar toch zijn ze er wel. Er zijn veel verschillende activiteiten waar ik mij graag mee bezig houd om hiermee om te gaan. Diamond paintings maken, puzzelen, borduren, breien; handwerkjes die mij tot rust brengen vind ik erg fijn. Door mijn angsten is rust in dingen vinden voor mij erg belangrijk en dit staat voor mij centraal.</p>
+            <p>Verder is familie het allerbelangrijkste voor mij. Ik heb mijn eigen dochter niet kunnen opvoeden en heb veel gemiste tijd met haar en met mijn familie, hierdoor koester ik de momenten waarop ik ze zie en zijn deze erg belangrijk voor mij. Mijn dochter mijn broers en mijn zussen komen mij nog altijd bezoeken, dit brengt mij veel geluk.</p>
+            <p>Ook ben ik door een andere bewoner van zorgpark Voorburg in aanraking gekomen met het christendom. Op deze manier ben ik gelovig geworden. Ik draag altijd een kruisje aan een ketting bij me, zo kan ik hier altijd mee naar God communiceren wanneer ik hier behoefte aan heb. God staat altijd voor mij klaar en hier haal ik veel steun uit.</p>
+
+        </div>
+    </section>
+
+    <section class="feedback">
+        <h3>Laat iets (liefs) achter voor Gonnie!</h3>
+        <form id="feedbackForm">
+            <div class="input-row">
+                <textarea id="messageInput" placeholder="Typ hier een berichtje voor Gonnie..." oninput="autoGrow(this)"></textarea>
+                <button type="submit">Verstuur</button>
+            </div>
+            <div class="emoji-row">
+                <label><input type="checkbox" name="emoji" value="❤️"> ❤️</label>
+                <label><input type="checkbox" name="emoji" value="😊"> 😊</label>
+                <label><input type="checkbox" name="emoji" value="🌷"> 🌷</label>
+                <label><input type="checkbox" name="emoji" value="💪"> 💪</label>
+            </div>
+        </form>
+    </section>
+
+    <section class="reaction-box" id="reactionBox"></section>
+
+    <script>
+        const form = document.getElementById('feedbackForm');
+        const box = document.getElementById('reactionBox');
+        const msgInput = document.getElementById('messageInput');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = JSON.parse(localStorage.getItem("gonnieMessages")) || [];
+            saved.forEach(msg => showMessage(msg));
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = msgInput.value.trim();
+            const emojis = Array.from(document.querySelectorAll('input[name="emoji"]:checked')).map(e => e.value);
+            if (!text && emojis.length === 0) return;
+
+            const message = text + " " + emojis.join(" ");
+            showMessage(message);
+            saveMessage(message);
+            msgInput.value = "";
+            document.querySelectorAll('input[name="emoji"]').forEach(e => e.checked = false);
+        });
+
+        function showMessage(msg) {
+            const span = document.createElement('span');
+            span.className = "floating-message";
+            span.textContent = msg;
+
+            const x = Math.random() * 80;
+            const y = Math.random() * 80;
+            span.style.left = `${x}%`;
+            span.style.top = `${y}%`;
+
+            box.appendChild(span);
+        }
+
+        function saveMessage(msg) {
+            const stored = JSON.parse(localStorage.getItem("gonnieMessages")) || [];
+            stored.push(msg);
+            localStorage.setItem("gonnieMessages", JSON.stringify(stored));
+        }
+    </script>
+    
+    <script>
+    function autoGrow(element) {
+        element.style.height = "auto";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+    </script>
+
+</body>
+</html>
